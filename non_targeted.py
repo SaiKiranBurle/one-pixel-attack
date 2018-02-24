@@ -82,6 +82,10 @@ def find_adversary_image(image, model):
         perturbed_images = get_perturbed_images(image, population)
         perturbed_predictions = model.predict(np.copy(perturbed_images), top=1000)
 
+        true_class_probabilities = map(lambda p: get_probability_for_class(p, true_label), perturbed_predictions)
+        logging.info("Probabilites for true class: Min={}, Max={}".format(min(true_class_probabilities),
+                                                                          max(true_class_probabilities)))
+
         population_children = gen_children(population, CONFIG)
         perturbed_images_children = get_perturbed_images(image, population_children)
         perturbed_predictions_children = model.predict(np.copy(perturbed_images_children), top=1000)
