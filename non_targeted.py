@@ -1,4 +1,5 @@
 import argparse
+import logging
 
 import numpy as np
 import yaml
@@ -9,6 +10,10 @@ from differential_evolution import init_population, gen_children
 from models.base import get_model_from_name
 
 CONFIG = None
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S')
 
 
 def get_image_array(fname):
@@ -66,19 +71,20 @@ def get_fit_population(fathers, children, fathers_predictions, children_predicti
 
 
 def find_adversary_image(image, model):
-    original_predictions = model.predict(image)
+    original_predictions = model.predict(np.copy(image))
     true_label = original_predictions[0][0][1]
     true_label_probability = original_predictions[0][0][2]
-    print "True label: {}, Probability: {}".format(true_label, true_label_probability)
+    logging.info("True label: {}, Probability: {}".format(true_label, true_label_probability))
 
     population = init_population(CONFIG)
     for i in range(CONFIG["num_iterations"]):
+        logging.info("Iteration: {}".format(i))
         perturbed_images = get_perturbed_images(image, population)
-        perturbed_predictions = model.predict(perturbed_images, top=200)
+        perturbed_predictions = model.predict(np.copy(perturbed_images), top=1000)
 
         population_children = gen_children(population, CONFIG)
         perturbed_images_children = get_perturbed_images(image, population_children)
-        perturbed_predictions_children = model.predict(perturbed_images_children)
+        perturbed_predictions_children = model.predict(np.copy(perturbed_images_children), top=1000)
 
         population = get_fit_population(population, population_children,
                                         perturbed_predictions,
