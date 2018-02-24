@@ -1,9 +1,9 @@
-from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
+from keras.applications.mobilenet import MobileNet, preprocess_input, decode_predictions
 
 
-class Vgg16_wrapper(object):
+class MobileNet_wrapper(object):
     def __init__(self):
-        self.model = VGG16()
+        self.model = MobileNet()
 
     def predict(self, images, top=100):
         images = preprocess_input(images)

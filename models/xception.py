@@ -1,9 +1,9 @@
-from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
+from keras.applications.xception import Xception, preprocess_input, decode_predictions
 
 
-class Vgg16_wrapper(object):
+class Xception_wrapper(object):
     def __init__(self):
-        self.model = VGG16()
+        self.model = Xception()
 
     def predict(self, images, top=100):
         images = preprocess_input(images)

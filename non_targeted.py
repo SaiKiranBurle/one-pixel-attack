@@ -53,14 +53,6 @@ def get_probability_for_class(predictions, class_name):
 def get_fit_population(fathers, children, fathers_predictions, children_predictions, true_class):
     """
     For non-targeted attacks, the fitness function is the probability of true class
-    Args:
-        fathers:
-        children:
-        fathers_predictions:
-        children_predictions:
-
-    Returns:
-
     """
     final_population = list()
     for i in range(len(fathers_predictions)):
