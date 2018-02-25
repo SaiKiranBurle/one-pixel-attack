@@ -38,5 +38,6 @@ class ResNet(object):
             decoded_prediction = list()
             for i in range(im.shape[0]):
                 decoded_prediction.append(('probability', self.class_names[i], im[i]))
+            decoded_prediction.sort(key=lambda x: x[2], reverse=True)
             decoded_predictions.append(decoded_prediction)
         return decoded_predictions
