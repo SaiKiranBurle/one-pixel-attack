@@ -1,6 +1,7 @@
 import argparse
 import logging
 
+import imageio
 import numpy as np
 import yaml
 from IPython import embed
@@ -28,8 +29,8 @@ def get_perturbed_images(image, perturbations):
     for candidate in perturbations:
         perturbed_image = np.copy(image)
         for p in candidate:
-            x = int(p[0] % CONFIG["img_x"])
-            y = int(p[1] % CONFIG["img_y"])
+            x = int(p[0])
+            y = int(p[1])
             perturbed_image[0][x][y][0] = p[2]
             perturbed_image[0][x][y][1] = p[3]
             perturbed_image[0][x][y][2] = p[4]
@@ -81,6 +82,13 @@ def find_adversary_image(image, model):
         logging.info("Iteration: {}".format(i))
         perturbed_images = get_perturbed_images(image, population)
         perturbed_predictions = model.predict(np.copy(perturbed_images), top=1000)
+
+        true_class_probabilities = map(lambda p: get_probability_for_class(p, true_label), perturbed_predictions)
+        logging.info("Probabilites for true class: Min={}, Max={}".format(min(true_class_probabilities),
+                                                                          max(true_class_probabilities)))
+        if i % 10 == 0:
+            imageio.imwrite('output/{}.jpg'.format(i),
+                            perturbed_images[true_class_probabilities.index(min(true_class_probabilities))])
 
         population_children = gen_children(population, CONFIG)
         perturbed_images_children = get_perturbed_images(image, population_children)

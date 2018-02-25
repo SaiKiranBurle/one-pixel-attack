@@ -51,6 +51,12 @@ def gen_children(fathers, config):
         while r3 == r2 or r3 == r1:
             r3 = random.randint(0, fathers.shape[0] - 1)
         new_candidate = fathers[r1] + config["scale_factor"] * (fathers[r2] + fathers[r3])
+        for i in range(new_candidate.shape[0]):
+            new_candidate[i][0] %= config["img_x"]
+            new_candidate[i][1] %= config["img_y"]
+            new_candidate[i][2] %= 256
+            new_candidate[i][3] %= 256
+            new_candidate[i][4] %= 256
         children.append(new_candidate)
 
     return np.array(children)
