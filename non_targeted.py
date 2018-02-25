@@ -76,5 +76,4 @@ if __name__ == "__main__":
     model = get_model_from_name(CONFIG["model"])
     CONFIG["img_x"], CONFIG["img_y"], CONFIG["img_channels"] = model.input_size
     image_arr = get_image_array(args.input_image, config=CONFIG)
-    embed()
-    # find_adversary_image(image_arr, model)
+    find_adversary_image(image_arr, model)
