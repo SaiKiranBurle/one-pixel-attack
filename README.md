@@ -30,7 +30,7 @@ python non_targeted.py --config config.yaml --input images/puppy.jpg
 
 | Original Deer image        |  Perturbed Deer image |
 | :---: | :---: |
-| ![](https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/original_deer.jpg){:height="100px" width="100px"}  |  ![](https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/perturbed_deer.jpg){:height="100px" width="100px"} |
+| <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/original_deer.jpg" width="100">  |  <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/perturbed_deer.jpg" width="100"> |
 |  Deer: 99.4%    |     Cat: 52.49%     |
 
 
@@ -38,5 +38,5 @@ python non_targeted.py --config config.yaml --input images/puppy.jpg
 
 | Original dog image        |  Perturbed dog image |
 | :---: | :---: |
-| ![](https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_original.jpg){:height="100px" width="100px"}  |  ![](https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_perturbed.jpg){:height="100px" width="100px"} |
+| <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_original.jpg" width="100"> | <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_perturbed.jpg" width="100"> |
 |  Dog: 94.8%    |     Bird: 90.6%     |
