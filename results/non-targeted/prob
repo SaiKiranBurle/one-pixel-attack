@@ -1,5 +1,4 @@
-In [50]: model.predict(im1)
-Out[50]:
+Original probabilities:
 [[('probability', 'dog', 0.94819659),
   ('probability', 'bird', 0.036788907),
   ('probability', 'ship', 0.004669691),
@@ -11,8 +10,7 @@ Out[50]:
   ('probability', 'horse', 0.00043053049),
   ('probability', 'airplane', 5.2770451e-05)]]
 
-In [51]: model.predict(imp)
-Out[51]:
+Perturbed probabilities:
 [[('probability', 'bird', 0.90675741),
   ('probability', 'dog', 0.078185752),
   ('probability', 'ship', 0.0058938279),

@@ -1,18 +1,4 @@
-In [2]: perturbed_predictions[target_class_probabilities.index(max(target_class_probabilities))]
-Out[2]:
-[('probability', 'cat', 0.52497774),
- ('probability', 'deer', 0.44142783),
- ('probability', 'frog', 0.019893229),
- ('probability', 'bird', 0.011510969),
- ('probability', 'ship', 0.0010811492),
- ('probability', 'dog', 0.00071446307),
- ('probability', 'truck', 0.00028722748),
- ('probability', 'horse', 8.7523033e-05),
- ('probability', 'automobile', 1.4407026e-05),
- ('probability', 'airplane', 5.4017441e-06)]
-
-In [3]: original_predictions[0]
-Out[3]:
+Original probabilities:
 [('probability', 'deer', 0.99434835),
  ('probability', 'cat', 0.0039290558),
  ('probability', 'frog', 0.00087339693),
@@ -23,3 +9,15 @@ Out[3]:
  ('probability', 'horse', 5.5465944e-06),
  ('probability', 'automobile', 1.7961224e-06),
  ('probability', 'airplane', 3.6202812e-07)]
+
+Perturbed probabilities:
+[('probability', 'cat', 0.52497774),
+ ('probability', 'deer', 0.44142783),
+ ('probability', 'frog', 0.019893229),
+ ('probability', 'bird', 0.011510969),
+ ('probability', 'ship', 0.0010811492),
+ ('probability', 'dog', 0.00071446307),
+ ('probability', 'truck', 0.00028722748),
+ ('probability', 'horse', 8.7523033e-05),
+ ('probability', 'automobile', 1.4407026e-05),
+ ('probability', 'airplane', 5.4017441e-06)]
