@@ -1,0 +1,25 @@
+In [50]: model.predict(im1)
+Out[50]:
+[[('probability', 'dog', 0.94819659),
+  ('probability', 'bird', 0.036788907),
+  ('probability', 'ship', 0.004669691),
+  ('probability', 'frog', 0.0032270746),
+  ('probability', 'truck', 0.0023606408),
+  ('probability', 'cat', 0.0019746136),
+  ('probability', 'automobile', 0.0014122347),
+  ('probability', 'deer', 0.00088688888),
+  ('probability', 'horse', 0.00043053049),
+  ('probability', 'airplane', 5.2770451e-05)]]
+
+In [51]: model.predict(imp)
+Out[51]:
+[[('probability', 'bird', 0.90675741),
+  ('probability', 'dog', 0.078185752),
+  ('probability', 'ship', 0.0058938279),
+  ('probability', 'cat', 0.0033345383),
+  ('probability', 'truck', 0.0023304771),
+  ('probability', 'frog', 0.0014226364),
+  ('probability', 'automobile', 0.0011570256),
+  ('probability', 'horse', 0.0007033376),
+  ('probability', 'deer', 0.00017277493),
+  ('probability', 'airplane', 4.2218027e-05)]]
