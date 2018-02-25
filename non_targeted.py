@@ -29,8 +29,8 @@ def get_perturbed_images(image, perturbations):
     for candidate in perturbations:
         perturbed_image = np.copy(image)
         for p in candidate:
-            x = int(p[0] % CONFIG["img_x"])
-            y = int(p[1] % CONFIG["img_y"])
+            x = int(p[0])
+            y = int(p[1])
             perturbed_image[0][x][y][0] = p[2]
             perturbed_image[0][x][y][1] = p[3]
             perturbed_image[0][x][y][2] = p[4]
