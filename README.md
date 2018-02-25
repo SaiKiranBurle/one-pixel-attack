@@ -12,3 +12,31 @@ the output probability distribution over the set of classes. These conditions ar
 attacks where the adversary also has access to the gradients in the Neural Network.
 
 The following project is a Keras reimplementation of ["One pixel attack for fooling deep neural networks"](https://arxiv.org/abs/1710.08864)
+
+## Usage
+
+### Targeted attack
+```bash
+python targeted.py --config config.yaml --input images/deer.jpg --target cat
+```
+
+### Non-targeted attack
+```bash
+python non_targeted.py --config config.yaml --input images/puppy.jpg
+```
+
+## Results
+### Targeted attack
+
+| Original Deer image        |  Perturbed Deer image |
+| --- | --- |
+| ![](https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/original_deer.jpg)  |  ![](https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/perturbed_deer.jpg) |
+|  Deer: 99.4%    |     Cat: 52.49%     |
+
+
+### Non-Targeted attack
+
+| Original dog image        |  Perturbed dog image |
+| --- | --- |
+| ![](https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_original.jpg)  |  ![](https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_perturbed.jpg) |
+|  Dog: 94.8%    |     Bird: 90.6%     |
