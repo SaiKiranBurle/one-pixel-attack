@@ -17,15 +17,19 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S')
 
 
+def fitness_function(prediction, true_class=None):
+    """
+    For non-targeted attacks, the fitness function is the negative probability of true class
+    """
+    return -get_probability_for_class(prediction, true_class)
+
+
 def get_fit_population(fathers, children, fathers_predictions, children_predictions, true_class):
-    """
-    For non-targeted attacks, the fitness function is the probability of true class
-    """
     final_population = list()
     for i in range(len(fathers_predictions)):
-        p_father = get_probability_for_class(fathers_predictions[i], true_class)
-        p_child = get_probability_for_class(children_predictions[i], true_class)
-        if p_father > p_child:
+        father_fitness = fitness_function(fathers_predictions[i], true_class)
+        child_fitness = fitness_function(children_predictions[i], true_class)
+        if father_fitness < child_fitness:
             final_population.append(children[i])
         else:
             final_population.append(fathers[i])
@@ -37,6 +41,7 @@ def find_adversary_image(image, model):
     true_label = original_predictions[0][0][1]
     true_label_probability = original_predictions[0][0][2]
     logging.info("True label: {}, Probability: {}".format(true_label, true_label_probability))
+    imageio.imwrite('output/original.jpg', image[0])
 
     population = init_population(CONFIG)
     for i in range(CONFIG["num_iterations"]):
@@ -71,5 +76,5 @@ if __name__ == "__main__":
     model = get_model_from_name(CONFIG["model"])
     CONFIG["img_x"], CONFIG["img_y"], CONFIG["img_channels"] = model.input_size
     image_arr = get_image_array(args.input_image, config=CONFIG)
-    # embed()
-    find_adversary_image(image_arr, model)
+    embed()
+    # find_adversary_image(image_arr, model)

@@ -17,26 +17,35 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S')
 
 
-def get_fit_population(fathers, children, fathers_predictions, children_predictions, true_class):
+def fitness_function(prediction, target_class):
     """
-    For non-targeted attacks, the fitness function is the probability of true class
+    For targeted attacks, the fitness function is the probability of target class
     """
+    return get_probability_for_class(prediction, target_class)
+
+
+def get_fit_population(fathers, children, fathers_predictions, children_predictions, target_class):
     final_population = list()
     for i in range(len(fathers_predictions)):
-        p_father = get_probability_for_class(fathers_predictions[i], true_class)
-        p_child = get_probability_for_class(children_predictions[i], true_class)
-        if p_father > p_child:
+        father_fitness = fitness_function(fathers_predictions[i], target_class)
+        child_fitness = fitness_function(children_predictions[i], target_class)
+        if father_fitness < child_fitness:
             final_population.append(children[i])
         else:
             final_population.append(fathers[i])
     return np.array(final_population)
 
 
-def find_adversary_image(image, model):
+def find_adversary_image(image, model, target_label):
     original_predictions = model.predict(np.copy(image))
     true_label = original_predictions[0][0][1]
     true_label_probability = original_predictions[0][0][2]
     logging.info("True label: {}, Probability: {}".format(true_label, true_label_probability))
+
+    target_label_probability = get_probability_for_class(original_predictions[0], target_label)
+    logging.info("Target label: {}, Probability: {}".format(target_label, target_label_probability))
+
+    imageio.imwrite('output/original.jpg', image[0])
 
     population = init_population(CONFIG)
     for i in range(CONFIG["num_iterations"]):
@@ -44,12 +53,12 @@ def find_adversary_image(image, model):
         perturbed_images = get_perturbed_images(image, population)
         perturbed_predictions = model.predict(np.copy(perturbed_images), top=model.num_classes)
 
-        true_class_probabilities = map(lambda p: get_probability_for_class(p, true_label), perturbed_predictions)
-        logging.info("Probabilites for true class: Min={}, Max={}".format(min(true_class_probabilities),
-                                                                          max(true_class_probabilities)))
+        target_class_probabilities = map(lambda p: get_probability_for_class(p, target_label), perturbed_predictions)
+        logging.info("Probabilites for target class: Min={}, Max={}".format(min(target_class_probabilities),
+                                                                            max(target_class_probabilities)))
         if i % 10 == 0:
             imageio.imwrite('output/{}.jpg'.format(i),
-                            perturbed_images[true_class_probabilities.index(min(true_class_probabilities))])
+                            perturbed_images[target_class_probabilities.index(max(target_class_probabilities))])
 
         population_children = gen_children(population, CONFIG)
         perturbed_images_children = get_perturbed_images(image, population_children)
@@ -58,7 +67,7 @@ def find_adversary_image(image, model):
         population = get_fit_population(population, population_children,
                                         perturbed_predictions,
                                         perturbed_predictions_children,
-                                        true_class=true_label)
+                                        target_class=target_label)
     embed()
 
 
@@ -71,6 +80,7 @@ if __name__ == "__main__":
 
     CONFIG = yaml.safe_load(open(args.config_file))
     model = get_model_from_name(CONFIG["model"])
+    target_label = args.target_class
     CONFIG["img_x"], CONFIG["img_y"], CONFIG["img_channels"] = model.input_size
     image_arr = get_image_array(args.input_image, config=CONFIG)
-    find_adversary_image(image_arr, model)
+    find_adversary_image(image_arr, model, target_label)
