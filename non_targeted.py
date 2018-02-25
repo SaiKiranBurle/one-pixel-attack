@@ -5,8 +5,8 @@ import imageio
 import numpy as np
 import yaml
 from IPython import embed
-from keras.preprocessing.image import load_img, img_to_array
 
+from common import get_image_array, get_probability_for_class, get_perturbed_images
 from differential_evolution import init_population, gen_children
 from models.base import get_model_from_name
 
@@ -15,45 +15,6 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
-
-
-def get_image_array(fname):
-    image = load_img(fname, target_size=(CONFIG["img_x"], CONFIG["img_y"]))
-    image = img_to_array(image)
-    image = image.reshape(1, image.shape[0], image.shape[1], image.shape[2])
-    return image
-
-
-def get_perturbed_images(image, perturbations):
-    perturbed_images = list()
-    for candidate in perturbations:
-        perturbed_image = np.copy(image)
-        for p in candidate:
-            x = int(p[0])
-            y = int(p[1])
-            perturbed_image[0][x][y][0] = p[2]
-            perturbed_image[0][x][y][1] = p[3]
-            perturbed_image[0][x][y][2] = p[4]
-        perturbed_images.append(perturbed_image)
-    perturbed_images_arr = np.concatenate(perturbed_images)
-    return perturbed_images_arr
-
-
-def get_probability_for_class(predictions, class_name):
-    """
-
-    Args:
-        predictions (list[tuple]):
-        class_name (str):
-
-    Returns:
-        float
-    """
-    for cls in predictions:
-        if str(cls[1]) == class_name:
-            return float(cls[2])
-    print "Class not found in predictions"
-    embed()
 
 
 def get_fit_population(fathers, children, fathers_predictions, children_predictions, true_class):
@@ -81,7 +42,7 @@ def find_adversary_image(image, model):
     for i in range(CONFIG["num_iterations"]):
         logging.info("Iteration: {}".format(i))
         perturbed_images = get_perturbed_images(image, population)
-        perturbed_predictions = model.predict(np.copy(perturbed_images), top=1000)
+        perturbed_predictions = model.predict(np.copy(perturbed_images), top=model.num_classes)
 
         true_class_probabilities = map(lambda p: get_probability_for_class(p, true_label), perturbed_predictions)
         logging.info("Probabilites for true class: Min={}, Max={}".format(min(true_class_probabilities),
@@ -92,7 +53,7 @@ def find_adversary_image(image, model):
 
         population_children = gen_children(population, CONFIG)
         perturbed_images_children = get_perturbed_images(image, population_children)
-        perturbed_predictions_children = model.predict(np.copy(perturbed_images_children), top=1000)
+        perturbed_predictions_children = model.predict(np.copy(perturbed_images_children), top=model.num_classes)
 
         population = get_fit_population(population, population_children,
                                         perturbed_predictions,
@@ -105,10 +66,10 @@ if __name__ == "__main__":
     parser.add_argument('--config', '-c', dest='config_file', help='config file')
     parser.add_argument('--input', '-i', dest='input_image', help='input image file')
     args = parser.parse_args()
-    # global CONFIG
+
     CONFIG = yaml.safe_load(open(args.config_file))
     model = get_model_from_name(CONFIG["model"])
-    # model = None
-    image_arr = get_image_array(args.input_image)
-    find_adversary_image(image_arr, model)
+    CONFIG["img_x"], CONFIG["img_y"], CONFIG["img_channels"] = model.input_size
+    image_arr = get_image_array(args.input_image, config=CONFIG)
     # embed()
+    find_adversary_image(image_arr, model)
