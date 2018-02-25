@@ -30,7 +30,7 @@ class ResNet(object):
                 img[:, :, i] = (img[:, :, i] - mean[i]) / std[i]
         return imgs
 
-    def predict(self, images):
+    def predict(self, images, top=None):
         processed = self.preprocess_input(images)
         probabilities = self.model.predict(processed, batch_size=self.batch_size)
         decoded_predictions = list()
