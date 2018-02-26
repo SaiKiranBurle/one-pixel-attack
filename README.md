@@ -19,6 +19,10 @@ The following project is a Keras reimplementation of ["One pixel attack for fool
 Given an input image and an image classification model, the aim of a targeted attack is to maximize the probability 
 label of the target class.
 
+True class: Deer
+
+Target class: Cat
+
 | Original Deer image        |  Perturbed Deer image |
 | :---: | :---: |
 | <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/original_deer.jpg" width="100">  |  <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/perturbed_deer.jpg" width="100"> |
@@ -30,10 +34,12 @@ label of the target class.
 Given an input image and an image classification model, the aim of a non-targeted attack is to minimize the probability 
 label of the true class.
 
+True class: Dog
+
 | Original dog image        |  Perturbed dog image |
 | :---: | :---: |
 | <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_original.jpg" width="100"> | <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_perturbed.jpg" width="100"> |
-|  Dog: 94.8%    |     Bird: 90.6%     |
+|  Dog: 94.8%    |     Dog: 7.8% (Bird: 90.8%)     |
 
 ## Usage
 ### Targeted attack
