@@ -13,8 +13,29 @@ attacks where the adversary also has access to the gradients in the Neural Netwo
 
 The following project is a Keras reimplementation of ["One pixel attack for fooling deep neural networks"](https://arxiv.org/abs/1710.08864)
 
-## Usage
+## Example successful attacks
+### Targeted attack
 
+Given an input image and an image classification model, the aim of a targeted attack is to maximize the probability 
+label of the target class.
+
+| Original Deer image        |  Perturbed Deer image |
+| :---: | :---: |
+| <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/original_deer.jpg" width="100">  |  <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/perturbed_deer.jpg" width="100"> |
+|  Deer: 99.4%    |     Cat: 52.49%     |
+
+
+### Non-targeted attack
+
+Given an input image and an image classification model, the aim of a non-targeted attack is to minimize the probability 
+label of the true class.
+
+| Original dog image        |  Perturbed dog image |
+| :---: | :---: |
+| <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_original.jpg" width="100"> | <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_perturbed.jpg" width="100"> |
+|  Dog: 94.8%    |     Bird: 90.6%     |
+
+## Usage
 ### Targeted attack
 ```bash
 python targeted.py --config config.yaml --input images/deer.jpg --target cat
@@ -25,18 +46,11 @@ python targeted.py --config config.yaml --input images/deer.jpg --target cat
 python non_targeted.py --config config.yaml --input images/puppy.jpg
 ```
 
-## Results
-### Targeted attack
+## Conclusions
 
-| Original Deer image        |  Perturbed Deer image |
-| :---: | :---: |
-| <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/original_deer.jpg" width="100">  |  <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/targeted/perturbed_deer.jpg" width="100"> |
-|  Deer: 99.4%    |     Cat: 52.49%     |
+* In my experiments, I found out that it is much easier to a fool a CIFAR-10 classifier than an ImageNet classifier. This 
+is noted by the authors in the original paper as well.
+* Although the success rate is quite low, this experiment was a great learning experience and demonstrates the fragile nature 
+of various Deep Learning based image classifiers.
+* Overall, I really liked the paper and enjoyed implementing for its simplicity and effectiveness conveying the point.
 
-
-### Non-Targeted attack
-
-| Original dog image        |  Perturbed dog image |
-| :---: | :---: |
-| <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_original.jpg" width="100"> | <img src="https://github.com/SaiKiranBurle/one-pixel-attack/blob/master/results/non-targeted/puppy_perturbed.jpg" width="100"> |
-|  Dog: 94.8%    |     Bird: 90.6%     |
